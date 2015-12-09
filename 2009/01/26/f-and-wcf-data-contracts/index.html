@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Consumed by Code</title>
+  <title>F# and WCF Data Contracts | Consumed by Code</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
@@ -79,61 +79,7 @@
   </header>
   <div id="main-content" class="wrap">
   <div class="inner">
-    
-  <article class="post">
-  <div class="pure-g">
-
-    <!-- article: meta -->
-    <div class="pure-u-1-12 article-meta">
-      <div class="date"><time datetime="2009-12-14T05:00:00.000Z">
-        <div class="day">14</div>
-        <div class="month">Dec 2009</div>
-      </time></div>
-      <div class="article-tags">
-        
-  
-    <a href='/tags/f/' class='pure-button pull-right' style='margin:3px;'>f#</a>
-  
-    <a href='/tags/fsunit/' class='pure-button pull-right' style='margin:3px;'>fsunit</a>
-  
-    <a href='/tags/testing/' class='pure-button pull-right' style='margin:3px;'>testing</a>
-  
-
-
-      </div>
-    </div>
-
-    <!-- article: main -->
-    <div class="pure-u-11-12">
-      <header><div class="article-title">
-        
-  
-    <h1 class="title"><a href="/2009/12/14/towards-fsunit-1.0/">Towards FsUnit 1.0</a></h1>
-  
-
-      </div></header>
-      <div class="article-entry">
-        
-          <p>I have been giving a lot of consideration recently to an FsUnit 1.0 release and the direction of the project. The 0.6 release was meant to steer the project more in the direction of Behavioral-Driven Development but there is already a much better project out there for F# and BDD, NaturalSpec.</p>
-<p>FsUnit 1.0 will instead be geared for more classical unit-testing and it now has two explicit goals: 1) to make unit-testing with F# more functional in nature and 2) to leverage existing unit-testing frameworks while at the same time exploring new possibilities offered by the F# language.</p>
-<p>The target audience for this project is the F# developer (new and veteran alike) who wishes to use the same unit-testing framework that they’re already knowledgeable about: NUnit, MbUnit, xUnit, and MsTest. The new 0.9 release supports only NUnit but the others will be added soon.</p>
-<p>The core syntax is pretty much the same as it has always been:<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> |&gt; should <span class="keyword">equal</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span> |&gt; should <span class="keyword">not</span> (<span class="keyword">equal</span> <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>] |&gt; should <span class="keyword">contain</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="constant">true</span> |&gt; should be True</span><br></pre></td></tr></table></figure></p>
-<p>But tests are once again contained within a test fixture and executed with a test runner. Here is the code for one of the project examples (UPDATE: removed non-standard use of self-identifier per reader’s comments. Thanks, Alan!):<br><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">LightBulb</span></span>(state) =</span><br><span class="line">    <span class="keyword">member</span> x.On = state</span><br><span class="line">    <span class="keyword">override</span> x.ToString() =</span><br><span class="line">        <span class="keyword">match</span> x.On <span class="keyword">with</span></span><br><span class="line">        | <span class="keyword">true</span>  -&gt; <span class="string">"On"</span></span><br><span class="line">        | <span class="keyword">false</span> -&gt; <span class="string">"Off"</span></span><br><span class="line"></span><br><span class="line"><span class="annotation">[&lt;TestFixture&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> ``<span class="title">Given</span> <span class="title">a</span> <span class="title">LightBulb</span> <span class="title">that</span> <span class="title">has</span> <span class="title">had</span> <span class="title">its</span> <span class="title">state</span> <span class="title">set</span> <span class="title">to</span> <span class="title">true</span>`` </span>()=</span><br><span class="line">    <span class="keyword">let</span> lightBulb = <span class="keyword">new</span> LightBulb(<span class="keyword">true</span>)</span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;Test&gt;]</span> <span class="keyword">member</span> test.</span><br><span class="line">     ``<span class="keyword">when</span> I ask whether it is On it answers <span class="keyword">true</span>.`` ()=</span><br><span class="line">            lightBulb.On |&gt; should be True</span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;Test&gt;]</span> <span class="keyword">member</span> test.</span><br><span class="line">     ``<span class="keyword">when</span> I convert it <span class="keyword">to</span> a string it becomes <span class="string">"On"</span>.`` ()=</span><br><span class="line">            string lightBulb |&gt; should equal <span class="string">"On"</span></span><br><span class="line"></span><br><span class="line"><span class="annotation">[&lt;TestFixture&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> ``<span class="title">Given</span> <span class="title">a</span> <span class="title">LightBulb</span> <span class="title">that</span> <span class="title">has</span> <span class="title">had</span> <span class="title">its</span> <span class="title">state</span> <span class="title">set</span> <span class="title">to</span> <span class="title">false</span>`` </span>()=</span><br><span class="line">    <span class="keyword">let</span> lightBulb = <span class="keyword">new</span> LightBulb(<span class="keyword">false</span>)</span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;Test&gt;]</span> <span class="keyword">member</span> test.</span><br><span class="line">     ``<span class="keyword">when</span> I ask whether it is On it answers <span class="keyword">false</span>.`` ()=</span><br><span class="line">            lightBulb.On |&gt; should be False</span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;Test&gt;]</span> <span class="keyword">member</span> test.</span><br><span class="line">     ``<span class="keyword">when</span> I convert it <span class="keyword">to</span> a string it becomes <span class="string">"Off"</span>.`` ()=</span><br><span class="line">            string lightBulb |&gt; should equal <span class="string">"Off"</span></span><br></pre></td></tr></table></figure></p>
-<p>I’m curious as to what people think about the use of back-ticked method names. I, for one, find it very helpful to be able to write in plain prose instead of CamelCase’d or snake_case’d method names.</p>
-<p>Stay tuned to this blog for more information as FsUnit reaches a 1.0 release.</p>
-
-        
-      </div>
-      <footer><div class="article-comment">
-        
-
-      </div></footer>
-    </div>
-  </div>
-</article>
-
-
-  <article class="post">
+    <article class="post">
   <div class="pure-g">
 
     <!-- article: meta -->
@@ -159,7 +105,7 @@
       <header><div class="article-title">
         
   
-    <h1 class="title"><a href="/2009/01/26/f-and-wcf-data-contracts/">F# and WCF Data Contracts</a></h1>
+    <h1 class="title">F# and WCF Data Contracts</h1>
   
 
       </div></header>
@@ -178,71 +124,17 @@
       </div>
       <footer><div class="article-comment">
         
+<section id="comment">
+  <h1 class="title">comment</h1>
+
+  
+</section>
+
 
       </div></footer>
     </div>
   </div>
 </article>
-
-
-  <article class="post">
-  <div class="pure-g">
-
-    <!-- article: meta -->
-    <div class="pure-u-1-12 article-meta">
-      <div class="date"><time datetime="2009-01-19T12:58:00.000Z">
-        <div class="day">19</div>
-        <div class="month">Jan 2009</div>
-      </time></div>
-      <div class="article-tags">
-        
-  
-    <a href='/tags/f/' class='pure-button pull-right' style='margin:3px;'>f#</a>
-  
-    <a href='/tags/wcf/' class='pure-button pull-right' style='margin:3px;'>wcf</a>
-  
-
-
-      </div>
-    </div>
-
-    <!-- article: main -->
-    <div class="pure-u-11-12">
-      <header><div class="article-title">
-        
-  
-    <h1 class="title"><a href="/2009/01/19/f#-and-wcf-examples/">F# and WCF Data Contracts</a></h1>
-  
-
-      </div></header>
-      <div class="article-entry">
-        
-          <p>Ted Neward recently <a href="http://blogs.tedneward.com/2009/01/18/Building+WCF+Services+With+F+Part+1.aspx" target="_blank" rel="external">wrote</a> about using F# to write WCF services. I share his enthusiasm; so much so that I’m using F# to write examples as I study for <a href="http://www.microsoft.com/learning/en/us/exams/70-503.mspx" target="_blank" rel="external">MCTS 70-503</a>.</p>
-<p>Good examples are hard to find. Most of the time books will give incomplete, or worse, erroneous examples. I have striven to boil each example down to just the essentials needed to get it to run. The examples use F# Interactive and each example is a fully encapsulated, self-sufficient demonstration of some WCF concept. To run an example, simply type <code>fsi --exec &lt;script name&gt;</code>. You can see my examples here: <a href="https://bitbucket.org/rvernagus/wcf-examples" target="_blank" rel="external">https://bitbucket.org/rvernagus/wcf-examples</a></p>
-<p>I am planning to run a series of posts based on my experience in using F# to write WCF services. Stay tuned for that!</p>
-
-        
-      </div>
-      <footer><div class="article-comment">
-        
-
-      </div></footer>
-    </div>
-  </div>
-</article>
-
-
-
-<div class="pure-g bitpager">
-  <div class="pure-u-1-12"></div>
-  <div class="pure-u-1-4">
-    
-  </div>
-  <div class="pure-u-5-12"></div>
-  <div class="pure-u-1-4">
-    
-  </div>
-</div>
 
   </div>
   </div>

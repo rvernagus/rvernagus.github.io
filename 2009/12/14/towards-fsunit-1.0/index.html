@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Consumed by Code</title>
+  <title>Towards FsUnit 1.0 | Consumed by Code</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
@@ -79,8 +79,7 @@
   </header>
   <div id="main-content" class="wrap">
   <div class="inner">
-    
-  <article class="post">
+    <article class="post">
   <div class="pure-g">
 
     <!-- article: meta -->
@@ -108,7 +107,7 @@
       <header><div class="article-title">
         
   
-    <h1 class="title"><a href="/2009/12/14/towards-fsunit-1.0/">Towards FsUnit 1.0</a></h1>
+    <h1 class="title">Towards FsUnit 1.0</h1>
   
 
       </div></header>
@@ -126,123 +125,17 @@
       </div>
       <footer><div class="article-comment">
         
+<section id="comment">
+  <h1 class="title">comment</h1>
+
+  
+</section>
+
 
       </div></footer>
     </div>
   </div>
 </article>
-
-
-  <article class="post">
-  <div class="pure-g">
-
-    <!-- article: meta -->
-    <div class="pure-u-1-12 article-meta">
-      <div class="date"><time datetime="2009-01-26T16:53:31.000Z">
-        <div class="day">26</div>
-        <div class="month">Jan 2009</div>
-      </time></div>
-      <div class="article-tags">
-        
-  
-    <a href='/tags/f/' class='pure-button pull-right' style='margin:3px;'>f#</a>
-  
-    <a href='/tags/wcf/' class='pure-button pull-right' style='margin:3px;'>wcf</a>
-  
-
-
-      </div>
-    </div>
-
-    <!-- article: main -->
-    <div class="pure-u-11-12">
-      <header><div class="article-title">
-        
-  
-    <h1 class="title"><a href="/2009/01/26/f-and-wcf-data-contracts/">F# and WCF Data Contracts</a></h1>
-  
-
-      </div></header>
-      <div class="article-entry">
-        
-          <p>F# offers the WCF developer a number of options for defining data contracts. You can use standard classes, constructed classes, or record types to define your data contracts. The key thing to remember is that the <code>DataContractSerializer</code> requires writeable properties. Let’s take a look at a simple data contract defined in each of the three ways mentioned.</p>
-<h2 id="Standard_Types">Standard Types</h2><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">[&lt;DataContract&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyDataContract</span> </span>=</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">mutable</span> x : string</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span>() = &#123; x = <span class="string">""</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;DataMember&gt;]</span></span><br><span class="line">    <span class="keyword">member</span> this.MyDataMember</span><br><span class="line">        <span class="keyword">with</span> get() = this.x</span><br><span class="line">        <span class="keyword">and</span> set v = this.x &lt;- v</span><br></pre></td></tr></table></figure>
-<h2 id="Constructed_Types">Constructed Types</h2><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">[&lt;DataContract&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyDataContract</span></span>() =</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mutable</span> x = <span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="annotation">[&lt;DataMember&gt;]</span></span><br><span class="line">    <span class="keyword">member</span> this.MyDataMember</span><br><span class="line">        <span class="keyword">with</span> get() = x</span><br><span class="line">        <span class="keyword">and</span> set v = x &lt;- v</span><br></pre></td></tr></table></figure>
-<h2 id="Record_Types">Record Types</h2><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">[&lt;DataContract&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyDataContract</span> </span>=</span><br><span class="line">    &#123; <span class="annotation">[&lt;DataMember&gt;]</span> <span class="keyword">mutable</span> MyDataMember : string &#125;</span><br></pre></td></tr></table></figure>
-<p>Of the three, I prefer to use record types to define my data contracts. A record type mirrors the intention behind defining a data contract where we are simply declaring a set of data fields by name and type. If you’ve used the <code>XmlSerializer</code> much, you are probably aware of the default constructor requirement. This restricted the use of record types since they do not get a default constructor. Thankfully, that restriction does not apply with the <code>DataContractSerializer</code>. In addition, you can remove the <code>DataContract</code> and <code>DataMember</code> attributes from your type definition if you are using .NET 3.5 Service Pack 1 although I wouldn’t recommend that you do this on a routine basis.</p>
-<p>You should use the <code>DataContract</code> attribute to control the namespace and name of your contract. Thus, a good data contract in F# would look something like this:<br><figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">[&lt;DataContract(</span><br><span class="line">    Namespace = "http://schemas.rvernagus.github.io/01/2009",</span><br><span class="line">    Name = "MyDataContract")&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyDataContract</span> </span>=</span><br><span class="line">    &#123; <span class="annotation">[&lt;DataMember&gt;]</span> <span class="keyword">mutable</span> MyDataMember : string &#125;</span><br></pre></td></tr></table></figure></p>
-<p>When we create an instance of our contract and serialize it, we get the following:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">MyDataContract</span> <span class="attribute">xmlns</span>=<span class="value">"http://schemas.rvernagus.github.io/01/2009"</span></span><br><span class="line">                <span class="attribute">xmlns:i</span>=<span class="value">"http://www.w3.org/2001/XMLSchema-instance"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">MyDataMember</span>&gt;</span>my value<span class="tag">&lt;/<span class="title">MyDataMember</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">MyDataContract</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>In my next post I will explore more advanced data contract concepts like collections and enumerations.</p>
-
-        
-      </div>
-      <footer><div class="article-comment">
-        
-
-      </div></footer>
-    </div>
-  </div>
-</article>
-
-
-  <article class="post">
-  <div class="pure-g">
-
-    <!-- article: meta -->
-    <div class="pure-u-1-12 article-meta">
-      <div class="date"><time datetime="2009-01-19T12:58:00.000Z">
-        <div class="day">19</div>
-        <div class="month">Jan 2009</div>
-      </time></div>
-      <div class="article-tags">
-        
-  
-    <a href='/tags/f/' class='pure-button pull-right' style='margin:3px;'>f#</a>
-  
-    <a href='/tags/wcf/' class='pure-button pull-right' style='margin:3px;'>wcf</a>
-  
-
-
-      </div>
-    </div>
-
-    <!-- article: main -->
-    <div class="pure-u-11-12">
-      <header><div class="article-title">
-        
-  
-    <h1 class="title"><a href="/2009/01/19/f#-and-wcf-examples/">F# and WCF Data Contracts</a></h1>
-  
-
-      </div></header>
-      <div class="article-entry">
-        
-          <p>Ted Neward recently <a href="http://blogs.tedneward.com/2009/01/18/Building+WCF+Services+With+F+Part+1.aspx" target="_blank" rel="external">wrote</a> about using F# to write WCF services. I share his enthusiasm; so much so that I’m using F# to write examples as I study for <a href="http://www.microsoft.com/learning/en/us/exams/70-503.mspx" target="_blank" rel="external">MCTS 70-503</a>.</p>
-<p>Good examples are hard to find. Most of the time books will give incomplete, or worse, erroneous examples. I have striven to boil each example down to just the essentials needed to get it to run. The examples use F# Interactive and each example is a fully encapsulated, self-sufficient demonstration of some WCF concept. To run an example, simply type <code>fsi --exec &lt;script name&gt;</code>. You can see my examples here: <a href="https://bitbucket.org/rvernagus/wcf-examples" target="_blank" rel="external">https://bitbucket.org/rvernagus/wcf-examples</a></p>
-<p>I am planning to run a series of posts based on my experience in using F# to write WCF services. Stay tuned for that!</p>
-
-        
-      </div>
-      <footer><div class="article-comment">
-        
-
-      </div></footer>
-    </div>
-  </div>
-</article>
-
-
-
-<div class="pure-g bitpager">
-  <div class="pure-u-1-12"></div>
-  <div class="pure-u-1-4">
-    
-  </div>
-  <div class="pure-u-5-12"></div>
-  <div class="pure-u-1-4">
-    
-  </div>
-</div>
 
   </div>
   </div>
